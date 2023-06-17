@@ -1,0 +1,15 @@
+@import url("https://v1.fontapi.ir/css/Shabnam");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Shabnam, Tahoma;
+}
+
+body{
+    background-color: #fefefe;
+}
