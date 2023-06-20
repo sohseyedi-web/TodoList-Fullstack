@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useCookies } from "react-cookie";
 import { toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../helpers/authService";
@@ -7,6 +8,7 @@ import Modal from "./../common/Modal";
 
 const Login = () => {
   const [active, setActive] = useState(false);
+  const [cookies] = useCookies(["jwt"]);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const navigate = useNavigate();
   const onChange = (e) => {
@@ -15,11 +17,17 @@ const Login = () => {
 
   const { data, isLoading, mutateAsync } = useMutation({ mutationFn: login });
 
+  useEffect(() => {
+    if (cookies.jwt) {
+      navigate("/");
+    }
+  }, [cookies, navigate]);
+
   const sendForm = async (e) => {
     e.preventDefault();
     try {
       await mutateAsync(formData);
-      toast.success("ورود موفق بود.");
+      toast.success(data.message);
       navigate("/");
     } catch (error) {
       console.log(error.message);

@@ -1,16 +1,18 @@
 import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useCookies } from "react-cookie";
 import { toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../../helpers/authService";
 
 const Login = () => {
+  const [cookies] = useCookies(["jwt"]);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
   });
-  const navigate = useNavigate();
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -19,12 +21,18 @@ const Login = () => {
     mutationFn: register,
   });
 
+  useEffect(() => {
+    if (cookies.jwt) {
+      navigate("/");
+    }
+  }, [cookies, navigate]);
+
   const sendForm = async (e) => {
     e.preventDefault();
     try {
       await mutateAsync(formData);
       console.log(formData);
-      toast.success("ورود موفق بود.");
+      toast.success(data.message);
       navigate("/");
     } catch (error) {
       console.log(error.message);
