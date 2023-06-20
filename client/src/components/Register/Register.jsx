@@ -31,8 +31,7 @@ const Login = () => {
     e.preventDefault();
     try {
       await mutateAsync(formData);
-      console.log(formData);
-      toast.success(data.message);
+      toast.success("ثبت نام انجام شد");
       navigate("/");
     } catch (error) {
       console.log(error.message);
