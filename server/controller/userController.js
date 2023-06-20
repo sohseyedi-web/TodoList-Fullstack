@@ -21,7 +21,7 @@ module.exports.register = async (req, res, next) => {
       maxAge: maxAge * 1000,
     });
 
-    res.status(201).json({ message: "user created", created: token });
+    res.status(201).json({ message: "خوش اومدی", created: token });
   } catch (error) {
     console.log(error.message, "error in register controller");
   }
@@ -35,7 +35,7 @@ module.exports.login = async (req, res, next) => {
       httpOnly: false,
       maxAge: maxAge * 1000,
     });
-    res.status(200).json({ user: user.email, status: true });
+    res.status(200).json({ user: user.email, message: "وارد شدید" });
   } catch (error) {
     console.log(error.message, "error in login controller");
   }
@@ -62,5 +62,17 @@ module.exports.checkuser = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error.message, "error in checkuser controller");
+  }
+};
+
+module.exports.logout = async (req, res) => {
+  try {
+    res.cookie("jwt", "none", {
+      expires: new Date(Date.now() + 5 * 1000),
+      httpOnly: true,
+    });
+    res.status(200).json({ message: "خارج شدید" });
+  } catch (error) {
+    console.log(error.message, "error in logout controller");
   }
 };
