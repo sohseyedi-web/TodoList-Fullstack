@@ -1,6 +1,8 @@
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
+import { login } from "../../helpers/authService";
 import Modal from "./../common/Modal";
 
 const Login = () => {
@@ -11,14 +13,16 @@ const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const { data, isLoading, mutateAsync } = useMutation({ mutationFn: login });
+
   const sendForm = async (e) => {
     e.preventDefault();
     try {
-      console.log(formData);
+      await mutateAsync(formData);
       toast.success("ورود موفق بود.");
       navigate("/");
     } catch (error) {
-      setActive(true);
+      console.log(error.message);
     }
   };
 
@@ -55,7 +59,7 @@ const Login = () => {
           />
         </div>
         <button className="my-3 w-full px-4 py-3 bg-blue-900 text-white hover:bg-blue-800 shadow-md rounded-xl duration-200 transition-all">
-          ورود به حساب
+          {isLoading ? "صبر کنید ... " : "ورود به حساب"}
         </button>
         <div className="flex flex-col md:flex-row md:items-center justify-between mt-4 text-white">
           <div>فراموشی رمز عبور!</div>

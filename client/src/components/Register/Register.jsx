@@ -1,6 +1,8 @@
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
+import { register } from "../../helpers/authService";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -13,14 +15,19 @@ const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const { data, isLoading, mutateAsync } = useMutation({
+    mutationFn: register,
+  });
+
   const sendForm = async (e) => {
     e.preventDefault();
     try {
+      await mutateAsync(formData);
       console.log(formData);
       toast.success("ورود موفق بود.");
       navigate("/");
     } catch (error) {
-      setActive(true);
+      console.log(error.message);
     }
   };
 
@@ -70,7 +77,7 @@ const Login = () => {
           />
         </div>
         <button className="my-3 w-full px-4 py-3 bg-green-700 text-white hover:bg-green-600 shadow-md rounded-xl duration-200 transition-all">
-          ثبت نام
+          {isLoading ? "صبر کنید ..." : "ثبت نام"}
         </button>
         <div className="flex flex-col md:flex-row md:items-center justify-between mt-4 text-white">
           <p>

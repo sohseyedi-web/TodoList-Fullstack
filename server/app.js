@@ -7,10 +7,16 @@ const cors = require("cors");
 
 const app = express();
 dotenv.config();
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+    methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
+  })
+);
 app.use(cookieParser());
 app.use(express.json());
-app.use("/api", authRoutes);
+app.use("/", authRoutes);
 
 mongoose
   .connect(process.env.MONGO_DB, {
