@@ -3,7 +3,7 @@ import axios from "axios";
 export const register = async (data) => {
   await axios
     .post(
-      "http://localhost:4000/register",
+      "http://localhost:4000/auth/register",
       { ...data },
       { withCredentials: true }
     )
@@ -11,17 +11,21 @@ export const register = async (data) => {
 };
 export const login = async (data) => {
   await axios
-    .post("http://localhost:4000/login", { ...data }, { withCredentials: true })
+    .post(
+      "http://localhost:4000/auth/login",
+      { ...data },
+      { withCredentials: true }
+    )
     .then((res) => res.data);
 };
 export const logout = async () => {
   await axios
-    .get("http://localhost:4000/logout", { withCredentials: true })
+    .get("http://localhost:4000/auth/logout", { withCredentials: true })
     .then((res) => res.data);
 };
 
 export const getUser = () => {
   return axios
-    .get("http://localhost:4000", { withCredentials: true })
+    .get("http://localhost:4000/auth", { withCredentials: true })
     .then((res) => res.data);
 };

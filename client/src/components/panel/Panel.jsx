@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { logout, getUser } from "./../../helpers/authService";
 import Header from "./TopSide";
+import TodoList from "./TodoList";
 const Panel = () => {
   const navigate = useNavigate();
   const [cookies, removeCookie] = useCookies(["jwt"]);
@@ -12,6 +13,7 @@ const Panel = () => {
     queryFn: getUser,
     queryKey: "get-user",
   });
+
 
   useEffect(() => {
     if (!cookies.jwt) {
@@ -40,17 +42,7 @@ const Panel = () => {
             ارسال
           </button>
         </div>
-        <div className="cursor-pointer transition-all duration-300 hover:bg-[#202020] w-[90%] text-white shadow-md py-3 lg:w-[50%] md:w-[75%] mx-auto relative mt-10 bg-[#252525] rounded-xl px-3 flex items-center justify-between">
-          <h3 className="text-xl font-semibold">سهیل سیدی</h3>
-          <div className="flex items-center gap-x-4">
-            <span className="text-green-500 cursor-pointer">
-              <RiIcon.RiEdit2Line size={27} />
-            </span>
-            <span className="text-red-500 cursor-pointer">
-              <RiIcon.RiDeleteBin5Fill size={27} />
-            </span>
-          </div>
-        </div>
+        <TodoList/>
       </section>
     </>
   );
