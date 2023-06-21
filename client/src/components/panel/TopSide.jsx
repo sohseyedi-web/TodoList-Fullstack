@@ -1,25 +1,16 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import * as RiIcon from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
+import { getUser, logout } from "../../helpers/authService";
 
-const Header = ({ data, logOut }) => {
-  const [dark, setDark] = useState("light");
-  useEffect(() => {
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      setDark("dark");
-    } else {
-      setDark("light");
-    }
-  }, []);
+const Header = ({ remove }) => {
+  const navigate = useNavigate();
+  const { data } = useQuery(["get-user"], getUser, { refetchInterval: 100 });
 
-  useEffect(() => {
-    if (dark === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [dark]);
-  const handleThemeSwitch = () => {
-    setDark(dark === "dark" ? "light" : "dark");
+  const logOutHandler = async () => {
+    await logout();
+    remove("jwt");
+    navigate("/login");
   };
 
   return (
@@ -29,22 +20,19 @@ const Header = ({ data, logOut }) => {
           سلام،{data?.user?.username}
         </h3>
         <div className="flex items-center gap-x-5">
-          <button
-            className="cursor-pointer transition-all duration-500 ease-in-out"
-            onClick={handleThemeSwitch}
-          >
+          {/* <button className="cursor-pointer transition-all duration-500 ease-in-out">
             {dark === "dark" ? (
               <RiIcon.RiSunLine size={28} />
             ) : (
               <RiIcon.RiMoonLine size={28} />
             )}
-          </button>
+          </button> */}
 
           <button>
             <RiIcon.RiNotification2Line size={28} />
           </button>
           <button
-            onClick={logOut}
+            onClick={logOutHandler}
             className="text-white h-[35px] w-[35px] rounded-full border-none bg-red-700 flex items-center justify-center"
           >
             <RiIcon.RiShutDownLine size={28} />

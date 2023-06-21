@@ -1,19 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import * as RiIcon from "react-icons/ri";
-import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { logout, getUser } from "./../../helpers/authService";
 import Header from "./TopSide";
 import TodoList from "./TodoList";
+import TodoForm from "./TodoForm";
 const Panel = () => {
-  const navigate = useNavigate();
+  const [title, setTitle] = useState("");
+  const [edit, setEdit] = useState(false);
+  const [todoId, setTodoId] = useState("");
   const [cookies, removeCookie] = useCookies(["jwt"]);
-  const { data, isLoading } = useQuery({
-    queryFn: getUser,
-    queryKey: "get-user",
-  });
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!cookies.jwt) {
@@ -21,28 +17,24 @@ const Panel = () => {
     }
   }, [cookies, navigate]);
 
-  console.log(data);
-
-  const logOutHandler = async () => {
-    await logout();
-    removeCookie("jwt");
-    navigate("/login");
+  const updateTodo = (id, text) => {
+    setEdit(!edit);
+    setTodoId(id);
+    setTitle(text);
   };
 
   return (
     <>
-      <Header data={data} logOut={logOutHandler} />
+      <Header remove={removeCookie} />
       <section className="max-w-7xl mx-auto container">
-        <div className="w-[90%] lg:w-[50%] md:w-[75%] mx-auto relative mt-10">
-          <input
-            type="text"
-            className="w-full outline-none h-[48px] rounded-xl px-2 border-none shadow-lg focus:bg-white transition-all duration-300 bg-gray-500"
-          />
-          <button className="w-[100px] absolute -left-1 border-none rounded-r-none top-0 h-[48px] bg-indigo-700 text-white rounded-xl">
-            ارسال
-          </button>
-        </div>
-        <TodoList/>
+        <TodoForm
+          title={title}
+          setTitle={setTitle}
+          todoId={todoId}
+          edit={edit}
+          setEdit={setEdit}
+        />
+        <TodoList updateTodo={updateTodo} />
       </section>
     </>
   );

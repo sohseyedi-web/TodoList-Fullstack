@@ -22,8 +22,6 @@ module.exports.saveTodo = async (req, res) => {
 
 module.exports.updateTodo = async (req, res) => {
   try {
-    console.log(req.params);
-
     await todoSchema.findByIdAndUpdate(
       req.params.id,
       { title: req.body.title },
