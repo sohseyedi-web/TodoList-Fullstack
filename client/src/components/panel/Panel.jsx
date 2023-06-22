@@ -7,7 +7,7 @@ import TodoForm from "./TodoForm";
 const Panel = () => {
   const [title, setTitle] = useState("");
   const [edit, setEdit] = useState(false);
-  const [todoId, setTodoId] = useState("");
+  const [todoId, setTodoId] = useState(null);
   const [cookies, removeCookie] = useCookies(["jwt"]);
   const navigate = useNavigate();
 

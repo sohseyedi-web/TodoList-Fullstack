@@ -2,11 +2,8 @@ import * as RiIcon from "react-icons/ri";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { deleteTodos, getTodos } from "./../../helpers/todoService";
 import { toast } from "react-hot-toast";
-import Modal from "../common/Modal";
-import { useState } from "react";
 
 const TodoList = ({ updateTodo }) => {
-  const [active, setActive] = useState(false);
   const { data, isLoading } = useQuery(["get-todos"], getTodos, {
     refetchInterval: 100,
   });
@@ -54,14 +51,6 @@ const TodoList = ({ updateTodo }) => {
             <RiIcon.RiDeleteBin5Fill size={27} />
           </span>
         </div>
-        {active && (
-          <Modal
-            setActive={setActive}
-            todo={todo}
-            title={title}
-            setTitle={setTitle}
-          />
-        )}
       </div>
     ))
   );

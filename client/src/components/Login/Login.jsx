@@ -4,10 +4,8 @@ import { useCookies } from "react-cookie";
 import { toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../helpers/authService";
-import Modal from "./../common/Modal";
 
 const Login = () => {
-  const [active, setActive] = useState(false);
   const [cookies] = useCookies(["jwt"]);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const navigate = useNavigate();
@@ -45,6 +43,7 @@ const Login = () => {
             ایمیل
           </label>
           <input
+            required
             type="email"
             id={"email"}
             name="email"
@@ -58,6 +57,7 @@ const Login = () => {
             رمز عبور
           </label>
           <input
+            required
             type="password"
             value={formData.password}
             onChange={onChange}
@@ -80,7 +80,6 @@ const Login = () => {
             </Link>
           </p>
         </div>
-        {active && <Modal setActive={setActive} />}
       </form>
     </section>
   );

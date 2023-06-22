@@ -49,6 +49,7 @@ const Login = () => {
             نام کاربری
           </label>
           <input
+            required
             type="text"
             id={"username"}
             name="username"
@@ -62,6 +63,7 @@ const Login = () => {
             ایمیل
           </label>
           <input
+            required
             type="text"
             id={"email"}
             name="email"
@@ -75,6 +77,7 @@ const Login = () => {
             رمز عبور
           </label>
           <input
+            required
             type="password"
             value={formData.password}
             onChange={onChange}
