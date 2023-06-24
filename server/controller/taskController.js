@@ -1,3 +1,4 @@
+const { findById } = require("../models/taskModels");
 const todoSchema = require("../models/taskModels");
 
 module.exports.getTodos = async (req, res) => {
@@ -41,5 +42,17 @@ module.exports.deleteTodo = async (req, res) => {
     res.status(200).json({ message: "delete todo success" });
   } catch (error) {
     console.log(error.message, "error in delete todo");
+  }
+};
+
+module.exports.completedTodo = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const todo = await todoSchema.findById(id);
+    todo.onCompleted = !todo.onCompleted;
+    todo.save();
+    res.status(200).json({ todo, message: "completed todo success" });
+  } catch (error) {
+    console.log(error.message, "error in completed todo");
   }
 };
